@@ -68,6 +68,13 @@ Login register and recover password Page
     margin-top: 0px;
 }
 
+#google-btn{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
 .login-sidebar .login-box {
     right: 0px;
     position: absolute;
