@@ -4,6 +4,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { DashBoardComponent } from './dash-board/dash-board.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
+import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { PagesComponent } from './pages.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -22,7 +23,8 @@ export const routes: Routes = [
             { path: 'promesas', component: PromesasComponent, data:{titulo:'Promesas'}},
             { path: 'rxjs', component: RxjsComponent, data:{titulo:'Rxjs'}},
             { path: 'perfil', component: PerfilComponent, data:{titulo:'Perfil de Usuario'}},
-            // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+            
+            { path: 'usuarios', component: UsuariosComponent, data:{titulo:'Usuario de Aplicacion'}},
         ]
     }
 ];

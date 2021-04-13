@@ -3,8 +3,10 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/internal/operators/tap';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, delay, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
+import { CargarUsuario } from '../interfaces/cargar-usuario.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { Usuario } from '../models/usuario.mode';
@@ -95,11 +97,7 @@ export class UsuarioService {
       role: this.usuario.role
     };
 
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    });
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, this.headers);
   }
 
   get uid() {
@@ -120,5 +118,40 @@ export class UsuarioService {
         })
       );
 
+  }
+
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    }
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    const url = `${base_url}/usuarios?desde=${desde}`;
+    return this.http.get<CargarUsuario>(url, this.headers)
+      .pipe(
+        delay(2000),
+        map(resp => {
+          const usuarios = resp.usuarios.map(user => new Usuario(user.nombre, user.email, '',
+            user.img, user.google, user.role, user.uid));
+
+          return {
+            total: resp.total,
+            usuarios
+          }
+        })
+      )
+  }
+
+  eliminarUsuario(usuario: Usuario) {
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.delete(url, this.headers);
+  }
+
+  guardarUsuario(data: Usuario) {
+
+    return this.http.put(`${base_url}/usuarios/${data.uid}`, data, this.headers);
   }
 }
